@@ -18,10 +18,10 @@ sslsocket::sslsocket(std::string hostname, int port) :  Socket(), isConnected(fa
     InitCTX(); //initializing certificate
     char password[15];
     char username[15];
-    printf("enter your password: ");
-    scanf("%s", password);
     printf("\nenter your username: ");
     scanf("%s", username);
+    printf("enter your password: ");
+    scanf("%s", password);
     if (connectTo(hostname,port))
         isConnected = true;
     std::string msg;
@@ -42,22 +42,29 @@ sslsocket::sslsocket(std::string hostname, int port) :  Socket(), isConnected(fa
     parameters += username;
     parameters += ",-N";
     parameters += password;
+    puts(parameters.c_str());
     std::string sizeo = to_string(parameters.length());
-
     msg = "POST /yedion/fireflyweb.aspx HTTP/1.1\r\n";
     msg += "Host: " + hostname + "\r\n";
     msg += "Content-Type: application/x-www-form-urlencoded\r\n";
     msg += "Content-Length: " + sizeo + "\r\n";
-    
-    //msg += "Accept: */*";
-    
+    msg += "Proxy-Connection: Keep-Alive\r\n";
+    msg += "Connection: close\r\n";
     msg += "\r\n";
     msg += parameters;
 
     send(msg);
     recv();
-    
-    //printSSL(); useage to see certificates
+
+    printSSL(); //useage to see certificates
+    std::string moreToDo;
+    puts("write something");
+    std::cin >> moreToDo;
+    moreToDo += "\r\n";
+    if (send(msg))
+        puts("sent!");
+    if (recv())
+        puts("recieving...");
 
 
 }
@@ -82,7 +89,7 @@ bool sslsocket::recv() const
     bzero(buf, sizeof(buf));
 
     int status;
-    if ((status = SSL_read(ssl, buf, sizeof(buf))) > 0)
+    while ((status = SSL_read(ssl, buf, sizeof(buf))) > 0)
     {
         printf("%s",buf);
         bzero(buf, sizeof(buf));
