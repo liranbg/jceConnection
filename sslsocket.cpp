@@ -49,7 +49,7 @@ sslsocket::sslsocket(std::string hostname, int port) :  Socket(), isConnected(fa
     msg += "Content-Type: application/x-www-form-urlencoded\r\n";
     msg += "Content-Length: " + sizeo + "\r\n";
     msg += "Proxy-Connection: Keep-Alive\r\n";
-    msg += "Connection: close\r\n";
+    msg += "Connection: Keep-Alive\r\n";
     msg += "\r\n";
     msg += parameters;
 
