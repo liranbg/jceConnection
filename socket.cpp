@@ -14,12 +14,20 @@ Socket::~Socket()
 
 bool Socket::create()
 {
+    struct timeval timeout;      
+    timeout.tv_sec = socketTimeOut;
+    timeout.tv_usec = 0;
+
     m_sock = socket ( AF_INET, SOCK_STREAM, 0 );
     if ( ! is_valid() )
         return false;
     int on = 1;
-    if ( setsockopt ( m_sock, SOL_SOCKET, SO_REUSEADDR, ( const char* ) &on, sizeof ( on ) ) == -1 )
+    if (setsockopt (m_sock, SOL_SOCKET, SO_REUSEADDR, (const char*)&on,sizeof(on)) == FAIL )
         return false;
+
+    if (setsockopt (m_sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout,sizeof(timeout)) == FAIL)
+        return false;
+
     return true;
 
 }
@@ -76,7 +84,6 @@ bool Socket::recv() const
     char buf[buffsize];
     std::string p;
     p.clear();
-    //ZeroMemory(buf, buffsize);
     bzero(buf, sizeof(buf));
     int status;
     std::cout << "recieving..." << std::endl;
@@ -147,7 +154,7 @@ void Socket::set_non_blocking ( const bool b )
     int opts;
 
     opts = fcntl ( m_sock,
-                   F_GETFL );
+       F_GETFL );
 
     if ( opts < 0 )
     {
@@ -160,6 +167,6 @@ void Socket::set_non_blocking ( const bool b )
         opts = ( opts & ~O_NONBLOCK );
 
     fcntl ( m_sock,
-            F_SETFL,opts );
+        F_SETFL,opts );
 
 }

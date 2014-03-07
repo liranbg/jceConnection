@@ -2,7 +2,7 @@
 #define Socket_H
 
 #define FAIL -1
-
+#define socketTimeOut 4
 //sock headers
 #include <sys/types.h>
 #include <sys/socket.h>

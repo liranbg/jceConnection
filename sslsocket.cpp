@@ -40,7 +40,6 @@ bool sslsocket::recieve(std::vector<std::string> &strvec) const
         strvec.push_back(msg);
         bzero(buf, sizeof(buf));
     }
-    printf("\n");
     if (status == SSL_RECEIVED_SHUTDOWN) //probably got what we need
         return true;
 
@@ -79,6 +78,7 @@ bool sslsocket::connectTo(std::string host, int port)
         ERR_print_errors_fp(stderr);
         return false;
     }
+    SSL_do_handshake(ssl);
     return true;
 }
 

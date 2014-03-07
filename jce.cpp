@@ -13,7 +13,6 @@ jce::jce(std::string username,std::string password)
 	JceConnector = new sslsocket(dst_host, dst_port); //open a new ssl connection to jce
 	if (JceConnector->isCon())
 	{
-		puts("Connected");
 		this->username = username;
 		this->pass = password;
 		makeFirstVisit();
@@ -49,10 +48,13 @@ void jce::makeFirstVisit()
 		puts ("message has been sent");
 		std::vector<std::string> reciever;
 		JceConnector->recieve((reciever));
-		//foreach (auto i = reciever.begin(); i != reciever.end(); ++i)
 		for (std::vector<std::string>::iterator i = reciever.begin(); i != reciever.end(); ++i)
 		{
 			std::cout << *i;
+			//printing the html
 		}
+		puts("\nrecieved");
 	}
+
+	//prgname=LoginValidtion1&Arguments=-N302539556,-A,-N013145836517240,-A,-A
 }

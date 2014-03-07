@@ -8,7 +8,8 @@
 #include "openssl/ssl.h"
 #include "openssl/err.h"
 
-#define BUFFER_SIZE 8192
+#define BUFFER_SIZE 8000
+
 
 class sslsocket : protected Socket
 {
