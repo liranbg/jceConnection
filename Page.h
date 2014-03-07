@@ -9,8 +9,9 @@ public:
 	Page(string html);
 	~Page();
 	string getString();
+	string getTitle();
 private:
-	string makeText(string html);
+	void makeText(string html);
 	string text;
 	string title;
 	bool haseTable;
