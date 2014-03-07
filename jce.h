@@ -12,17 +12,21 @@
 
 class jce
 {
-	public:
-		 jce(std::string username,std::string password);
-		 ~jce();
-		 
-	private:
-		void makeFirstVisit();
-		std::string makeRequest(std::string);
-		std::string username;
-		std::string pass;
-		std::string hasspass;
-		sslsocket *JceConnector;
+public:
+	jce(std::string username,std::string password);
+	~jce();
+
+private:
+	void makeFirstVisit();
+	void makeFurtherRequests();
+	std::string makeRequest(std::string);
+
+	std::string username;
+	std::string pass;
+	std::string hasspass;
+	std::string hassid;
+	
+	sslsocket *JceConnector;
 
 };
 
