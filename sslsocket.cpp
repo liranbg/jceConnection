@@ -1,71 +1,17 @@
 #include "sslsocket.h"
-#include <string>
-#include <iostream>
-#include <sstream>
 
-template <typename T>
-std::string to_string(T value)
-{
-	std::ostringstream os ;
-	os << value ;
-	return os.str() ;
-}
+
+
 
 sslsocket::sslsocket(std::string hostname, int port) :  Socket(), isConnected(false)
 {
     create(); //creating socket
-
     InitCTX(); //initializing certificate
-    char password[15];
-    char username[15];
-    printf("\nenter your username: ");
-    scanf("%s", username);
-    printf("enter your password: ");
-    scanf("%s", password);
+    
     if (connectTo(hostname,port))
         isConnected = true;
-    std::string msg;
-
-    //		GET METHOD
-	//    msg = "GET /";
-	//    msg += "yedion/fireflyweb.aspx?appname=BSHITA&prgname=LoginValidation&arguments=-N[FILLUSERNAME],-N";
-	//    msg += password;
-	//    msg += " HTTP/1.1\r\n";
-	//    msg += "Host: " + hostname + "\r\n";
-	//    msg += "Proxy-Connection: Keep-Alive\r\n";
-	//    msg += "Accept: */*\r\n";
-	//    msg += "Connection: close\r\n";
-	//    msg += "\n";
-
-    //		HTTP POST METHOD - MORE DATA TO SEND
-    std::string parameters = "yedion/fireflyweb.aspx?appname=BSHITA&prgname=LoginValidation&arguments=-N";
-    parameters += username;
-    parameters += ",-N";
-    parameters += password;
-    puts(parameters.c_str());
-    std::string sizeo = to_string(parameters.length());
-    msg = "POST /yedion/fireflyweb.aspx HTTP/1.1\r\n";
-    msg += "Host: " + hostname + "\r\n";
-    msg += "Content-Type: application/x-www-form-urlencoded\r\n";
-    msg += "Content-Length: " + sizeo + "\r\n";
-    msg += "Proxy-Connection: Keep-Alive\r\n";
-    msg += "Connection: Keep-Alive\r\n";
-    msg += "\r\n";
-    msg += parameters;
-
-    send(msg);
-    recv();
-
-    printSSL(); //useage to see certificates
-    std::string moreToDo;
-    puts("write something");
-    std::cin >> moreToDo;
-    moreToDo += "\r\n";
-    if (send(msg))
-        puts("sent!");
-    if (recv())
-        puts("recieving...");
-
+    
+    //prgname=LoginValidtion1&Arguments=-N302539556,-A,-N013145836517240,-A,-A
 
 }
 void sslsocket::printSSL()
@@ -79,19 +25,19 @@ void sslsocket::printSSL()
     showCerts();  /* get any certs */
 }
 
-bool sslsocket::recv() const
+bool sslsocket::recieve(std::vector<std::string> &strvec) const
 {
     if (!isConnected)
         return false;
 
-    const int buffsize = 1024;
-    char buf[buffsize];
+    char buf[BUFFER_SIZE];
     bzero(buf, sizeof(buf));
 
     int status;
     while ((status = SSL_read(ssl, buf, sizeof(buf))) > 0)
     {
-        printf("%s",buf);
+        std::string msg = buf;
+        strvec.push_back(msg);
         bzero(buf, sizeof(buf));
     }
     printf("\n");

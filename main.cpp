@@ -9,8 +9,13 @@
 */
 int main(int argc, char *argv[])
 {
-
-    sslsocket sslso(dst_host,dst_port); 
+	char usr[15];
+	char pass[15];
+	printf("please write your username: ");
+	scanf("%s",usr);
+	printf("\nplease write your password: ");
+	scanf("%s",pass);
+    jce *jc = new jce(usr,pass);
     while (true);
     
 }

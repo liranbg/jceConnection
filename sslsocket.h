@@ -2,12 +2,13 @@
 #define sslsocket_H
 
 #include "socket.h"
-
 #include <malloc.h>
 #include <resolv.h>
+#include <vector>
 #include "openssl/ssl.h"
 #include "openssl/err.h"
 
+#define BUFFER_SIZE 8192
 
 class sslsocket : protected Socket
 {
@@ -15,9 +16,9 @@ public:
     sslsocket(std::string hostname, int port);
     ~sslsocket();
     bool connectTo(std::string host, int port);
-
+    bool isCon(){ return isConnected; }
     bool send(const std::string) const;
-    bool recv() const;
+    bool recieve(std::vector<std::string> &) const;
 
     void printSSL();
 
