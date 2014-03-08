@@ -66,7 +66,7 @@ void Page::makeText(string html)
 				i++;
 				while(html[i] != '<')
 				{
-					temp += html[i];
+						temp += html[i];
 					i++;
 				}
 			}
