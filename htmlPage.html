@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="he">
+
+		 <head>
+
+ 	<meta charset="UTF-8">
+
+	<noscript><meta http-equiv="X-Frame-Options" content="SameOrigin"></noscript>
+<title>המכללה האקדמית להנדסה ירושלים</title>
+
+<link href="/info/MagicStyles_Type_2.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/info/scripts/open_dd.js" ></script>
+<script type="text/javascript" src="/info/sort/jquery.min.js"></script> <script type="text/javascript" src="/info/sort/jquery-migrate.js"></script>
+<script type="text/javascript" src="/info/sort/ddaccordion.js"></script>
+<script type="text/javascript">
+	function send_form(prgname,arguments,target)
+	{
+		var input = '<input type="hidden" name="prgname" value="'+prgname+'">';
+		var input = input + '<input type="hidden" name="arguments" value="'+arguments+'">';
+		$('<form action="fireflyweb.aspx" method="post" target="'+target+'">'+input+'</form>').appendTo('body').submit();
+	}
+</script>
+<script type="text/javascript">
+
+
+ddaccordion.init({
+	headerclass: "expandable", //Shared CSS class name of headers group that are expandable
+	contentclass: "categoryitems", //Shared CSS class name of contents group
+
+	revealtype: "click", //Reveal content when user clicks or onmouseover the header? Valid value: "click", "clickgo", or "mouseover"
+
+
+	mouseoverdelay: 200, //if revealtype="mouseover", set delay in milliseconds before header expands onMouseover
+	collapseprev: true, //Collapse previous content (so only one open at any time)? true/false
+	defaultexpanded: [0], //index of content(s) open by default [index1, index2, etc]. [] denotes no content
+	onemustopen: false, //Specify whether at least one header should be open always (so never all headers closed)
+	animatedefault: false, //Should contents open by default be animated into view?
+	persiststate: true, //persist state of opened contents within browser session?
+	toggleclass: ["", "openheader"], //Two CSS classes to be applied to the header when it's collapsed and expanded, respectively ["class1", "class2"]
+	togglehtml: ["prefix", "", ""], //Additional HTML added to the header when it's collapsed and expanded, respectively  ["position", "html1", "html2"] (see docs)
+	animatespeed: "fast", //speed of animation: integer in milliseconds (ie: 200), or keywords "fast", "normal", or "slow"
+	oninit:function(headers, expandedindices){ //custom code to run when headers have initalized
+		//do nothing
+	},
+	onopenclose:function(header, index, state, isuseractivated){ //custom code to run whenever a header is opened or closed
+		//do nothing
+	}
+})
+
+</script>
+
+<style type="text/css">
+
+.buttonA {
+                padding: 4px 10px 3px 25px;
+                border: 1px solid #DE5D51;
+                position: relative;
+                cursor: pointer;
+                display: inline-block;
+                background-image: url( '/info/images/buttonJumpBackground_red.png' );
+                background-repeat: repeat-x;
+                font-size: 11px;
+                text-decoration: none;
+                color: #9D271E;
+                -moz-border-radius-bottomleft: 5px;
+                -moz-border-radius-bottomright: 5px;
+                -moz-border-radius-topleft: 5px;
+                -moz-border-radius-topright: 5px;
+                font-family: Arial, Helvetica, sans-serif;
+        }
+        .buttonA img,.buttonTOP img {
+            position: absolute;
+            top: -4px;
+            left: -12px;
+            border: none;
+        }
+        .buttonA:hover {
+                color: #DE5D51;
+                border: 1px solid #FFB3AA;
+        }
+
+
+.buttonA_Big {
+                padding: 4px 10px 3px 25px;
+                border: 1px solid #DE5D51;
+                position: relative;
+                cursor: pointer;
+                display: inline-block;
+                background-image: url( '/info/images/buttonJumpBackground_red.png' );
+                background-repeat: repeat-x;
+            font-size: 13px;
+	    font-weight: bold;
+                text-decoration: none;
+                color: #9D271E;
+                -moz-border-radius-bottomleft: 5px;
+                -moz-border-radius-bottomright: 5px;
+                -moz-border-radius-topleft: 5px;
+                -moz-border-radius-topright: 5px;
+                font-family: Arial, Helvetica, sans-serif;
+        }
+        .buttonA_Big img {
+            position: absolute;
+            top: -4px;
+            left: -12px;
+            border: none;
+        }
+        .buttonA_Big:hover {
+                color: #DE5D51;
+                border: 1px solid #FFB3AA;
+        }
+.arrowlistmenu{
+width: 156px; text-align:right/*width of accordion menu*/
+}
+
+.arrowlistmenu .menuheader{ /*CSS class for menu headers in general (expanding or not!)*/
+font: bold 14px Arial;
+color: white;
+background: black url(/info/images/titlebar.png) repeat-x center right;
+margin-bottom: 10px; /*bottom spacing between header and rest of content*/
+text-transform: uppercase;
+padding: 4px 10px 4px 0px; /*header text is indented 10px*/
+cursor: hand;
+cursor: pointer;
+}
+
+.arrowlistmenu .openheader{ /*CSS class to apply to expandable header when it's expanded*/
+background-image: url(/info/images/titlebar-active.png);
+}
+
+.arrowlistmenu ul{ /*CSS for UL of each sub menu*/
+list-style-type: none;
+margin: 0;
+padding: 0;
+margin-bottom: 8px; /*bottom spacing between each UL and rest of content*/
+}
+
+.arrowlistmenu ul li{
+padding-bottom: 2px; /*bottom spacing between menu items*/
+}
+
+.arrowlistmenu ul li a{
+color: #A70303;
+background: url(/info/images/arrowbullet.png) no-repeat center right; /*custom bullet list image*/
+display: block;
+padding: 2px 0;
+padding-right: 19px; /*link text is indented 19px*/
+text-decoration: none;
+font-weight: bold;
+border-bottom: 1px solid #dadada;
+font-size: 90%;
+}
+
+.arrowlistmenu ul li a:visited{
+/*color: #A70303;*/
+}
+
+.arrowlistmenu ul li a:hover{ /*hover state CSS*/
+color: #A70303;
+background-color: #F3F3F3;
+}
+
+</style>
+</head>
+
+<body>
+<form>
+<input type="hidden" value="sagida@post.jce.ac.il" id="EMail">
+<input type="hidden" value="sagida" id="USERNAME">
+<table style="width:848px;text-align:center;margin: 0;height:70%;margin:auto;">
+
+ <tr>
+	<td style="width:850px;height:538" class="bgGreen"><table style="width:846;height:100%;border:0;text-align:center;margin: 0" >
+	 <tbody>
+		 <tr>
+			<td style="width:100%;height:127" class="topHeader"><table style="width:100%;border:0;margin: 0" >
+				<tr>
+				 <td class="TableGreen">&nbsp;</td>
+				 <td class="TableGreen">&nbsp;</td>
+				</tr>
+				<tr>
+				 <td style="width:100%" class="TableGreen"><img alt="left top image" src="/info/images/top_left.jpg" style="width:174;height:113"></td>
+				 <td><img alt="right top image" src="/info/images/top_right.jpg" style="width:396;height:113"></td>
+				</tr>
+			</table>			 </td>
+			<td style="width:170" class="underLogo"><img alt="Logo" src="/info/images/logo.jpg" style="width:167;height:113"></td>
+		 </tr>
+		 <tr style="vertical-align: text-top">
+			<td style="height:453;vertical-align: text-top" class="tableContent">
+
+<table style="margin: 0;width:646;text-align:right">
+ <tbody>
+ <tr>
+	<td style="vertical-align: text-top"><table dir="rtl" style="border:0;margin: 0;width:642">
+	 <tbody>
+		 <tr>
+			<td style="height:30">
+			<div class="header">
+				<table width="642" class="header">
+					<tr>
+						<td>
+							<table width="100%">
+								<tr>
+									<td width="583"><span class="TitleGreen">תחנת מידע לסטודנט</span><span class="TitleGray"> עמודP5�B� הבית</span></td>
+									<td width="39" class="Title2Page2"><a href="javascript:send_form('MenuCall','-N,-N,-N97','_parent');" class="exitLink"> יציאה </a></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</div>
+			</td>
+		 </tr>
+		 <tr>
+			<td style="width:635px;height:30" class="Newstop"><span class="TitleGreen">הודעות</span></td>
+		 </tr>
+		 <tr>
+			<td class="Newsmiddle"><p><br>
+			 </p>
+				<marquee direction="up" scrolldelay="1" scrollamount="1" style="width:600;height:100" vspace="10" onMouseOver="this.scrollAmount=0" onMouseOut="this.scrollAmount=1">
+								
+				<br>
+				לחוברת מידע לסטודנט ולאמנת השירות של מנהל הסטודנטים לחץ <a href="https://yedion.jce.ac.il/info/Course/a5_booklet.pdf" target="_blank">כאן</a>
+				<hr>
+				
+				<br>
+
+				<hr>
+				</marquee>			</td>
+		 </tr>
+		 <tr>
+			<td class="Newsbottom" style="height:22"></td>
+		 </tr>
+	 </tbody>
+	</table></td>
+	</tr>
+ <tr>
+	<td style="vertical-align: text-top"><table dir="rtl" style="border:0;margin: 0;width:642px">
+	 <tbody>
+		 <tr>
+			<td style="width:150;height:41" class="Newstop"><span class="TitleGreen">קיצורי דרך</span><span class="TitleGray"></span></td>
+		 </tr>
+		 <tr>
+			<td style="height:129" class="Newsmiddle"><div id="navcontainer2">
+				<ul id="navlist2">
+				 <li><a href="http://aguda.jce.ac.il/" target="_blank" title="Opens new window">אתר אגודת הסטודנטים</a></li>
+
+		<li><a href="javascript:send_form('Menu','-N300242435,-A,-N016562146238106,-N150','_parent');" >הכוון תעסוקתי</a></li>
+		<li><a href="https://yedion.jce.ac.il/info/course/students_rights.pdf" target="_blank"  title="Opens new window">חוק זכויות הסטודנט</a></li>
+		<li><a href="/info/rights.pdf" target="_blank" title="Opens new window">תיקון לחוק זכויות הסטודנט</a></li>
+		<li><a href="/info/army.pdf" target="_blank" title="Opens new window">נוהל סיוע לסטודנטים המשרתים במילואים</a></li>
+
+
+<li>סרטון הדרכה לרישום לקורסים:</li>
+
+<iframe width="500" height="345" src="//www.youtube.com/embed/poGwB9docGE" frameborder="0" allowfullscreen></iframe>				</ul>
+			</div></td>
+		 </tr>
+		 <tr>
+			<td class="Newsbottom" style="height:64"></td>
+		 </tr>
+	 </tbody>
+	</table></td>
+ </tr>
+</tbody></table></td>
+			<td style="vertical-align: text-top"><table style="width:150;border:0:text-align:right;margin: 0;heigth:100%">
+				<tbody>
+				 <tr>
+					 <td style="width:100%">
+						<h1 style="width:125;text-align:right">שלום דיין שגיא</h1>
+					</td>
+				 </tr>
+				 <tr>
+					 <td style="height:311;vertical-align: text-top" ><table style="width:166;border:0;text-align:center;margin: 0" >
+						<tbody>
+						 <tr>
+							<td><table style="height:100%;border:0;text-align:center;margin: 0"  dir="rtl">
+								 <tbody>
+
+									<tr>
+									 <td>
+<div class="arrowlistmenu">
+
+
+		<h3 class="menuheader expandable">הודעות ופניות</h3>
+	<ul class="categoryitems">
+
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0018,','_self');">
+					הודעות
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0023,','_self');">
+					מערכת פניות
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0048,','_self');">
+					מצב פניות
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0007,','_self');">
+					מערכת אישורים
+			</a>
+	</li>
+ 
+
+	</ul>
+	<h3 class="menuheader expandable">מערכת שעות</h3>
+	<ul class="categoryitems">
+
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0003,','_self');">
+					רשימת מערכת שעות
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0016,','_self');">
+					לוח מערכת שעות
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0202,','_self');">
+					חיפוש - מערכת שעות
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0122,','_self');">
+					מערכת כלל מכללתית
+			</a>
+	</li>
+ 
+
+	</ul>
+	<h3 class="menuheader expandable">בחינות וציונים</h3>
+	<ul class="categoryitems">
+
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0082,','_self');">
+					צפיה בבחינות
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0006,','_self');">
+					תכנית בחינות
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0077,','_self');">
+					רישום למועד ב
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0050,','_self');">
+					הגשת עבודות
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0004,','_self');">
+					גליון ציונים
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0013,','_self');">
+					רשימת ציונים
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0135,','_self');">
+					לוח בחינות
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0063,','_self');">
+					מבחנים אמריקאים
+			</a>
+	</li>
+ 
+
+	</ul>
+	<h3 class="menuheader expandable">אתרי קורסים</h3>
+	<ul class="categoryitems">
+
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0061,','_self');">
+					כניסה לאתרי קורסים
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0062,','_self');">
+					כניסה לפורומים
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0055,','_self');">
+					חיפוש - אתרי קורסים
+			</a>
+	</li>
+ 
+
+	</ul>
+	<h3 class="menuheader expandable">רישום לקורסים</h3>
+	<ul class="categoryitems">
+
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0020,','_self');">
+					רישום לקורס/ים
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0019,','_self');">
+					הצג מערכת שעות
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0022,','_self');">
+					בטל רישום לקורס/ים
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0036,','_self');">
+					רשימות המתנה
+			</a>
+	</li>
+ 
+
+	</ul>
+	<h3 class="menuheader expandable"> שכ"ל</h3>
+	<ul class="categoryitems">
+
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0011,','_self');">
+					כרטסת כספית
+			</a>
+	</li>
+ 
+
+	</ul>
+	<h3 class="menuheader expandable">היחידה להכוון תעסוקתי</h3>
+	<ul class="categoryitems">
+
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0150,','_self');">
+					היחידה להכוון תעסוקתי
+			</a>
+	</li>
+ 
+
+	</ul>
+	<h3 class="menuheader expandable">עדכון פרטים</h3>
+	<ul class="categoryitems">
+
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0012,','_self');">
+					עדכון פרטים אישיים
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0067,','_self');">
+					הגדרות אישיות
+			</a>
+	</li>
+ 
+
+	</ul>
+	<h3 class="menuheader expandable">כללי</h3>
+	<ul class="categoryitems">
+
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0124,','_self');">
+					שרת דואר חדש
+			</a>
+	</li>
+ 
+
+	</ul>
+	<h3 class="menuheader expandable">קבצים להורדה</h3>
+	<ul class="categoryitems">
+
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0134,','_self');">
+					מינהל סטודנטים
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','XB�-N,-A,-N,-N0138,','_self');">
+					ועדת הוראה
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0125,','_self');">
+					דיקנאט הסטודנטים
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0123,','_self');">
+					מדור שכ"ל
+			</a>
+	</li>
+ 
+
+	</ul>
+	<h3 class="menuheader expandable">שאלות נפוצות</h3>
+	<ul class="categoryitems">
+
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0151,','_self');">
+					מינהל סטודנטים
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0152,','_self');">
+					מדור בחינות
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0153,','_self');">
+					ועדת הוראה
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0154,','_self');">
+					מדור סיוע
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0155,','_self');">
+					שכ"ל
+			</a>
+	</li>
+ 
+
+	</ul>
+	<h3 class="menuheader expandable">שנה"ל תשע"ד</h3>
+	<ul class="categoryitems">
+
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0139,','_self');">
+					לוחות תאריכים
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0140,','_self');">
+					פתיחת סמסטר ב
+			</a>
+	</li>
+ 
+
+	</ul>
+	<h3 class="menuheader expandable">תוכניות לימודים</h3>
+	<ul class="categoryitems">
+
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0126,','_self');">
+					תעשייה וניהול
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0127,','_self');">
+					אלקטרוניקה
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0128,','_self');">
+					תוכנה
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0129,','_self');">
+					חומרים מתקדמים
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0130,','_self');">
+					פרמצבטית
+			</a>
+	</li>
+ 
+
+	<li>
+	 <a href="javascript:send_form('Menu','-N,-A,-N,-N0132,','_self');">
+					מכונות
+			</a>
+	</li>
+ 
+</ul>
+
+</div>
+
+</td>
+									</tr>
+								 </tbody>
+							</table></td>
+						 </tr>
+						</tbody>
+					 </table></td>
+				 </tr>
+
+				</tbody>
+			</table></td>
+		 </tr>
+	 </tbody>
+	</table></td>
+ </tr>
+ <tr>
+	<td class="bottomCornerBG"></td>
+ </tr>
+</table>
+</form>
+</body>
+</html> <!--FileName : Menu_Full_4.htm-->
