@@ -19,7 +19,7 @@ public:
     bool connectTo(std::string host, int port);
     bool isCon(){ return isConnected; }
     bool send(const std::string) const;
-    bool recieve(std::vector<std::string> &) const;
+    bool recieve(std::string &) const;
 
     void printSSL();
 

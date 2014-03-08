@@ -11,7 +11,8 @@ std::string to_string(T value)
 jce::jce(std::string username,std::string password)
 {
 	this->hassid = "";
-	this->hasspass="";
+	this->hasspass = "";
+	recieverPage = new std::string("");
 	JceConnector = new sslsocket(dst_host, dst_port); //open a new ssl connection to jce
 	if (JceConnector->isCon())
 	{
@@ -40,30 +41,26 @@ std::string jce::makeRequest(std::string parameters)
 }
 void jce::makeFurtherRequests()
 {
-
-	//prgname=LoginValidtion1&Arguments=-N302539556,-A,-N013145836517240,-A,-A
-	//prgname=LoginValidtion1&Arguments=-N302539556,-A,-N016406877497933,-A,-A
-	
 	std::string parameters;
 	puts("\nwrite ur command:");
 	std::cin >> parameters;
 	std::cout << parameters;
-
 	if (JceConnector->send(makeRequest(parameters)))
 	{
-		puts ("message has been sent");
-		std::vector<std::string> reciever;
-		if (JceConnector->recieve((reciever)))
+		puts("message has been sent");
+		if (JceConnector->recieve(*recieverPage))
 			puts("\nrecieved");
-		for (auto &p : reciever)
+		for (auto &p : *recieverPage)
 		{
 			std::cout << p;
 		}
 	}
+	//delete
 }
 void jce::makeFirstVisit()
 {
 	//making connection short path
+	
 	std::string parameters = "?appname=BSHITA&prgname=LoginValidation&arguments=-N";
 	parameters += username;
 	parameters += ",-N";
@@ -71,33 +68,38 @@ void jce::makeFirstVisit()
 
 	if (JceConnector->send(makeRequest(parameters)))
 	{
-		puts ("First connection has been sent");
-		std::vector<std::string> reciever;
-		if (JceConnector->recieve((reciever)))
-			puts("\nrecieved");
+		puts ("First login validation step");
+		
+		if (JceConnector->recieve(*recieverPage))
+			puts("\nRecieved data");
 
-		for (auto &p : reciever)
+		while (true)
 		{
-			std::size_t hasspass_position1 = p.find("-A,-N"); //finds the first position
+			std::size_t hasspass_position1 = recieverPage->find("-A,-N"); //finds the first position
 			hasspass_position1 += 5;
-			std::size_t hasspass_position2 = p.find(",-A,-A", hasspass_position1);
+			std::size_t hasspass_position2 = recieverPage->find(",-A,-A", hasspass_position1);
 			if ((hasspass_position2 != std::string::npos) && (hasspass_position1 != std::string::npos)) {
-				hasspass = p.substr(hasspass_position1,hasspass_position2-hasspass_position1); 			
+				hasspass = recieverPage->substr(hasspass_position1,hasspass_position2-hasspass_position1); 			
 			}
-			std::size_t id_position1 = p.find("e=\"-N", 0); //finds the first position
+			std::size_t id_position1 = recieverPage->find("e=\"-N", 0); //finds the first position
 			id_position1 += 5;
-			std::size_t id_position2 = p.find(",-A", id_position1);
+			std::size_t id_position2 = recieverPage->find(",-A", id_position1);
 			if ((id_position2 != std::string::npos) && (id_position1 != std::string::npos)) {
-				hassid = p.substr(id_position1,id_position2-id_position1);
+				hassid = recieverPage->substr(id_position1,id_position2-id_position1);
 			}
 			if ((hassid.empty()) || (hasspass.empty()))
 			{
 				puts("conenction went wrong, reconnect. aborting");
 				abort();
 			}
+			else
+			{
+				puts("we got our id and hash password");
+				break; //we found the id and hash
+			}
 			
 		}
-		//prgname=LoginValidtion1&Arguments=-N302539556,-A,-N016406877497933,-A,-A
+		//prgname=LoginValidtion1&Arguments=-N[id],-A,-N[hash],-A,-A
 		parameters = "prgname=LoginValidtion1&Arguments=-N";
 		parameters += hassid;
 		parameters += ",-A,-N";
@@ -106,13 +108,16 @@ void jce::makeFirstVisit()
 		if (JceConnector->send(makeRequest(parameters)))
 		{
 			puts ("stepping out the landing page. the main html will be here soon.");
-			std::vector<std::string> reciever;
-			if (JceConnector->recieve((reciever)))
+			if (JceConnector->recieve(*recieverPage))
 				puts("\nrecieved");
-			for (auto &p : reciever)
-			{
-				std::cout << p;
-			}
+
+			Page p(*recieverPage);
+			puts(p.getString().c_str()); //printing as text
+
+			// for (auto &p : *recieverPage) printing html
+			// {
+			// 	std::cout << p;
+			// }
 			makeFurtherRequests();
 		}
 	}

@@ -5,16 +5,17 @@
 #define dst_port 443
 
 #include "sslsocket.h"
+#include "Page.h"
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <vector>
 
 class jce
 {
 public:
 	jce(std::string username,std::string password);
-	~jce();
+
+	~jce()  { delete recieverPage; delete JceConnector; }
 
 private:
 	void makeFirstVisit();
@@ -26,6 +27,7 @@ private:
 	std::string hasspass;
 	std::string hassid;
 	
+	std::string *recieverPage;
 	sslsocket *JceConnector;
 
 };

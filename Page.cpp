@@ -11,7 +11,6 @@ Page::~Page()
 	cout << "killing Page..." <<endl;
 }
 
-
 void Page::makeText(string html)
 {
 	bool foundTitle = false;

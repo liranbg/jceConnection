@@ -25,8 +25,9 @@ void sslsocket::printSSL()
     showCerts();  /* get any certs */
 }
 
-bool sslsocket::recieve(std::vector<std::string> &strvec) const
+bool sslsocket::recieve(std::string &str) const
 {
+    str = "";
     if (!isConnected)
         return false;
 
@@ -36,8 +37,7 @@ bool sslsocket::recieve(std::vector<std::string> &strvec) const
     int status;
     while ((status = SSL_read(ssl, buf, sizeof(buf))) > 0)
     {
-        std::string msg = buf;
-        strvec.push_back(msg);
+        str+= buf;
         bzero(buf, sizeof(buf));
     }
     if (status == SSL_RECEIVED_SHUTDOWN) //probably got what we need
@@ -119,7 +119,6 @@ void sslsocket::InitCTX()
         abort();
     }
 }
-//useage to convert types into string (int,doubles and etc.)
 
 
 
