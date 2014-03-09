@@ -20,6 +20,10 @@ public:
 private:
 	void makeFirstVisit();
 	void makeFurtherRequests();
+
+	std::string getGradesPath(std::string fromyear, std::string fromsemester, 
+		std::string toyear,std::string tosemester);
+
 	std::string makeRequest(std::string);
 
 	std::string username;

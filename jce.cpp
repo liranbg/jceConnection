@@ -34,6 +34,8 @@ std::string jce::makeRequest(std::string parameters)
 	msg += "Content-Type: application/x-www-form-urlencoded\r\n";
 	msg += "Content-Length: " + to_string(parameters.length()) + "\r\n";
 	msg += "Proxy-Connection: Keep-Alive\r\n";
+	//msg += "Accept-Charset: utf-8";
+	//msg += "Accept: text/plain\r\n";
 	msg += "Connection: Keep-Alive\r\n";
 	msg += "\r\n";
 	msg += parameters;
@@ -72,7 +74,6 @@ void jce::makeFirstVisit()
 		
 		if (JceConnector->recieve(*recieverPage))
 			puts("\nRecieved data");
-
 		while (true)
 		{
 			std::size_t hasspass_position1 = recieverPage->find("-A,-N"); //finds the first position
@@ -111,14 +112,36 @@ void jce::makeFirstVisit()
 			if (JceConnector->recieve(*recieverPage))
 				puts("\nrecieved");
 
-			Page p(*recieverPage);
-			puts(p.getString().c_str()); //printing as text
 
-			// for (auto &p : *recieverPage) printing html
-			// {
-			// 	std::cout << p;
-			// }
-			makeFurtherRequests();
 		}
+		if  (JceConnector->send(makeRequest(getGradesPath("2013","0","2014","3")))) //change it in GUI (select years, semesters)
+		{
+			puts ("getting rates!");
+			if (JceConnector->recieve(*recieverPage))
+			{
+				puts ("printing grades!");
+				std::cout << *recieverPage;
+
+
+				Page p(*recieverPage);
+				std::cout << p.getString();
+			}
+		}
+			//makeFurtherRequests();
 	}
+}
+
+
+std::string jce::getGradesPath(std::string fromyear, std::string fromsemester, 
+	std::string toyear,std::string tosemester)
+{
+	std::string string = "PRGNAME=HADPASAT_MISMAHIM_LETALMID&ARGUMENTS=TZ,-N4,R1C2,R1C4,R1C1,R1C3,-A,-A,R1C5,-A,UNIQ&";
+	string += "TZ=" + hassid + "&";
+	string += "UNIQ=" + hasspass + "&";
+	string += "R1C2=" + fromyear + "&";
+	string += "R1C1=" + toyear + "&";
+	string += "R1C3=" + tosemester + "&";
+	string += "R1C4=" + fromsemester + "&";
+	string += "R1C5=0";
+	return string;
 }

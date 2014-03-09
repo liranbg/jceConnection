@@ -29,7 +29,10 @@ bool sslsocket::recieve(std::string &str) const
 {
     str = "";
     if (!isConnected)
+    {
+        std::cout << "socket is closed";
         return false;
+    }
 
     char buf[BUFFER_SIZE];
     bzero(buf, sizeof(buf));
@@ -38,9 +41,10 @@ bool sslsocket::recieve(std::string &str) const
     while ((status = SSL_read(ssl, buf, sizeof(buf))) > 0)
     {
         str+= buf;
+        //std::cout << str;
         bzero(buf, sizeof(buf));
     }
-    if (status == SSL_RECEIVED_SHUTDOWN) //probably got what we need
+    if (status != SSL_RECEIVED_SHUTDOWN) //probably got what we need
         return true;
 
     return false;
