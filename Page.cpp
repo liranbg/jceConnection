@@ -60,11 +60,43 @@ void Page::makeText(string html)
 		
 		if(inBody)
 		{
+			if(html[i] == '<')
+			{
+				//tr> / td>
+				i++;
+				string tableTag = html.substr(i, 2); //legth of "tr/td"
+				if(tableTag == "tr")
+				{
+					temp += "\n"; //new row -> new line
+					while(html[i] != '>')
+						i++;
+					i++;
+				}
+				else if(tableTag == "td")
+				{
+					temp += "\t"; // new cell -> tab between data	
+					while(html[i] != '>')
+						i++;
+					i++;
+				}
+			}
 			if(html[i] == '>')
 			{
 				i++;
+				if(i >= html.length())
+					break; //Cheak if EOF (Text)
 				while(html[i] != '<')
 				{
+					if(html[i] == '&')
+					{
+					//&nbsp;
+						string nbspChr = html.substr(i, 6);
+						if(nbspChr == "&nbsp;")
+						i += 6;
+					}
+					if(html[i] == '<')
+						continue;
+					else if(html[i] != '\n')
 						temp += html[i];
 					i++;
 				}
