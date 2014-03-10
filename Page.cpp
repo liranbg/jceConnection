@@ -3,11 +3,8 @@
 Page::Page(string& html)
 {
 	cout << "bulding page... string size: " << html.length() << endl;
-	if(html.length() <= 1)
-	{
+	if(html.empty())
 		cout << "ERROR: unable to build Page" << endl;
-		throw "invalid String";
-	}
 	makeText(html);
 }
 
@@ -57,18 +54,20 @@ void Page::makeText(string& html)
 				{
 					while(html[i] != '>')
 						i++;
-					i++;
 					inBody = true;
 				}
 			}
 		}
 		
-		if(inBody)
-		{
-			if(html[i] == '<')
-			{
+		/**
+		 * Actual Body Text In String
+		 */
+		 if(inBody)
+		 {
+		 	if(html[i] == '<')
+		 	{
 				//tr> / td>
-				i++;
+		 		i++;
 				string tableTag = html.substr(i, 2); //legth of "tr/td"
 				if(tableTag == "tr")
 				{
@@ -89,11 +88,11 @@ void Page::makeText(string& html)
 			{
 				i++;
 				if(endOfString(i, html.length()))
-					break; //Cheak if EOF (Text)
+					goto finishBuild; //Cheak if EOF (Text)
 				while(html[i] != '<')
 				{
 					if(endOfString(i, html.length()))
-						break; //Cheak if EOF (Text)
+						goto finishBuild; //Cheak if EOF (Text)
 					if(html[i] == '&')
 					{
 					//&nbsp;
@@ -101,7 +100,7 @@ void Page::makeText(string& html)
 						if(nbspChr == "&nbsp;")
 						i += 6;
 						if(endOfString(i, html.length()))
-							break; //Cheak if EOF (Text)
+							goto finishBuild; //Cheak if EOF (Text)
 					}
 					if(html[i] == '<')
 						continue;
@@ -112,8 +111,8 @@ void Page::makeText(string& html)
 			}
 		}
 	}
-
-	this->text = temp;
+	finishBuild:
+		this->text = temp;
 }
 
 bool Page::endOfString(int index, int length)
