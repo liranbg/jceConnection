@@ -1,3 +1,6 @@
+#ifndef PAGE_H
+#define PAGE_H
+
 #include <iostream>
 #include <string>
 
@@ -17,3 +20,5 @@ private:
 	string title;
 	bool haseTable;
 };
+
+#endif
