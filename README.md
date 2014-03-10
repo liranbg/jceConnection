@@ -29,4 +29,4 @@ run the execute file
 
 			./jce
 
-		follow instructions.
+follow instructions.
