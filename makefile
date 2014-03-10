@@ -3,7 +3,7 @@ CFLAGS = -Wall -g -fexceptions -std=c++11 -D_REENTRANT -pthread
 LDFLAGS = -g -std=c++11
 LIBS = -lcrypto -lssl
 EXECUTE=jce
-SRCS=main.cpp socket.cpp sslsocket.cpp jce.cpp Page.cpp
+SRCS=main.cpp socket.cpp sslsocket.cpp jce.cpp Page.cpp user.cpp
 
 all: jce
 jce:
