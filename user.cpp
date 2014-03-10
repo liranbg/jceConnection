@@ -4,6 +4,7 @@
 user::user() {
 	user::setUsername();
 	user::setPassword();
+	connection = new jce(username, password);
 }
 
 int user::getch() {

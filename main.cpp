@@ -7,7 +7,6 @@
 int main(int argc, char *argv[])
 {
     user *curr_user = new user(); 
-    jce *jc = new jce(curr_user->getUsername(),curr_user->getPassword());
     while (true);
     
 }

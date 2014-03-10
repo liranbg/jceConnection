@@ -5,6 +5,7 @@
 #include <iostream>
 #include <termios.h>
 #include <unistd.h>
+#include "jce.h"
 using namespace std;
 class user
 {
@@ -19,6 +20,7 @@ private:
     void getPass(string &pass);
     string username;
     string password;
+    jce* connection;
 };
 #endif
 
