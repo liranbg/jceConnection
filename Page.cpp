@@ -1,8 +1,13 @@
 #include "Page.h"
 
-Page::Page(string html)
+Page::Page(string& html)
 {
-	cout << "bulding page..." << endl;
+	cout << "bulding page... string size: " << html.length() << endl;
+	if(html.length() <= 1)
+	{
+		cout << "ERROR: unable to build Page" << endl;
+		throw "invalid String";
+	}
 	makeText(html);
 }
 
@@ -11,7 +16,7 @@ Page::~Page()
 	cout << "killing Page..." <<endl;
 }
 
-void Page::makeText(string html)
+void Page::makeText(string& html)
 {
 	bool foundTitle = false;
 	bool inBody = false;
@@ -83,16 +88,20 @@ void Page::makeText(string html)
 			if(html[i] == '>')
 			{
 				i++;
-				if(i >= html.length())
+				if(endOfString(i, html.length()))
 					break; //Cheak if EOF (Text)
 				while(html[i] != '<')
 				{
+					if(endOfString(i, html.length()))
+						break; //Cheak if EOF (Text)
 					if(html[i] == '&')
 					{
 					//&nbsp;
 						string nbspChr = html.substr(i, 6);
 						if(nbspChr == "&nbsp;")
 						i += 6;
+						if(endOfString(i, html.length()))
+							break; //Cheak if EOF (Text)
 					}
 					if(html[i] == '<')
 						continue;
@@ -107,6 +116,12 @@ void Page::makeText(string html)
 	this->text = temp;
 }
 
+bool Page::endOfString(int index, int length)
+{
+	if(index < length)
+		return false;
+	return true;
+}
 
 string Page::getString()
 {
