@@ -8,18 +8,12 @@ std::string to_string(T value)
 	return os.str();
 }
 
-jce::jce(std::string username,std::string password)
+jce::jce() : userAcc()
 {
-	this->hassid = "";
-	this->hasspass = "";
 	recieverPage = new std::string("");
 	JceConnector = new sslsocket(dst_host, dst_port); //open a new ssl connection to jce
 	if (JceConnector->isCon())
-	{
-		this->username = username;
-		this->pass = password;
 		makeFirstVisit();
-	}
 	else
 	{
 		puts("Error while connecting");
@@ -34,8 +28,8 @@ std::string jce::makeRequest(std::string parameters)
 	msg += "Content-Type: application/x-www-form-urlencoded\r\n";
 	msg += "Content-Length: " + to_string(parameters.length()) + "\r\n";
 	msg += "Proxy-Connection: Keep-Alive\r\n";
-	//msg += "Accept-Charset: utf-8";
-	//msg += "Accept: text/plain\r\n";
+	msg += "Accept-Charset: utf-8";
+	msg += "Accept: text/plain\r\n";
 	msg += "Connection: Keep-Alive\r\n";
 	msg += "\r\n";
 	msg += parameters;
@@ -59,14 +53,27 @@ void jce::makeFurtherRequests()
 	}
 	//delete
 }
+bool writeHtmlToFile(string& page)
+{
+	ofstream myfile ("page.html");
+	if (myfile.is_open())
+	{
+		myfile << page;
+		myfile.close();
+		return true;
+	}
+	else 
+		cout << "Unable to open file";
+	return false;
+}
 void jce::makeFirstVisit()
 {
 	//making connection short path
 	
 	std::string parameters = "?appname=BSHITA&prgname=LoginValidation&arguments=-N";
-	parameters += username;
+	parameters += userAcc.getUsername();
 	parameters += ",-N";
-	parameters += pass;
+	parameters += userAcc.getPassword();
 
 	if (JceConnector->send(makeRequest(parameters)))
 	{
@@ -76,19 +83,21 @@ void jce::makeFirstVisit()
 			puts("\nRecieved data");
 		while (true)
 		{
-			std::size_t hasspass_position1 = recieverPage->find("-A,-N"); //finds the first position
+			std::size_t hasspass_position1 = recieverPage->find("-A,-N"); //finds the hashed password
 			hasspass_position1 += 5;
 			std::size_t hasspass_position2 = recieverPage->find(",-A,-A", hasspass_position1);
 			if ((hasspass_position2 != std::string::npos) && (hasspass_position1 != std::string::npos)) {
-				hasspass = recieverPage->substr(hasspass_position1,hasspass_position2-hasspass_position1); 			
+				std::string hasspass = recieverPage->substr(hasspass_position1,hasspass_position2-hasspass_position1);
+				userAcc.setHashedPassword(hasspass);			
 			}
-			std::size_t id_position1 = recieverPage->find("e=\"-N", 0); //finds the first position
+			std::size_t id_position1 = recieverPage->find("e=\"-N", 0); //finds the user id
 			id_position1 += 5;
 			std::size_t id_position2 = recieverPage->find(",-A", id_position1);
 			if ((id_position2 != std::string::npos) && (id_position1 != std::string::npos)) {
-				hassid = recieverPage->substr(id_position1,id_position2-id_position1);
+				std::string hassid = recieverPage->substr(id_position1,id_position2-id_position1);
+				userAcc.setUserID(hassid);
 			}
-			if ((hassid.empty()) || (hasspass.empty()))
+			if (((userAcc.getUserID()).empty()) || ((userAcc.getHashedPassword()).empty()))
 			{
 				puts("conenction went wrong, reconnect. aborting");
 				abort();
@@ -102,9 +111,9 @@ void jce::makeFirstVisit()
 		}
 		//prgname=LoginValidtion1&Arguments=-N[id],-A,-N[hash],-A,-A
 		parameters = "prgname=LoginValidtion1&Arguments=-N";
-		parameters += hassid;
+		parameters += userAcc.getUserID();
 		parameters += ",-A,-N";
-		parameters += hasspass;
+		parameters += userAcc.getHashedPassword();
 		parameters += ",-A,-A";
 		if (JceConnector->send(makeRequest(parameters)))
 		{
@@ -120,9 +129,16 @@ void jce::makeFirstVisit()
 			if (JceConnector->recieve(*recieverPage))
 			{
 				puts ("printing grades!");
-				std::cout << *recieverPage;
 
+				// const char * c =recieverPage->c_str();
+				// std::size_t htmlTabINdex = recieverPage->find("<html");
+				// c += htmlTabINdex; //getting c into the first <html> index in string
+				// std::string pag = to_string(c);
+				
+				//writeHtmlToFile(*recieverPage); //writes string into page.html
 
+				//std::cout << pag;
+				
 				Page p(*recieverPage);
 				std::cout << p.getString();
 			}
@@ -130,14 +146,12 @@ void jce::makeFirstVisit()
 			//makeFurtherRequests();
 	}
 }
-
-
 std::string jce::getGradesPath(std::string fromyear, std::string fromsemester, 
 	std::string toyear,std::string tosemester)
 {
 	std::string string = "PRGNAME=HADPASAT_MISMAHIM_LETALMID&ARGUMENTS=TZ,-N4,R1C2,R1C4,R1C1,R1C3,-A,-A,R1C5,-A,UNIQ&";
-	string += "TZ=" + hassid + "&";
-	string += "UNIQ=" + hasspass + "&";
+	string += "TZ=" + userAcc.getUserID() + "&";
+	string += "UNIQ=" + userAcc.getHashedPassword() + "&";
 	string += "R1C2=" + fromyear + "&";
 	string += "R1C1=" + toyear + "&";
 	string += "R1C3=" + tosemester + "&";

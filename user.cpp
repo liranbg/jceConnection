@@ -1,10 +1,11 @@
 #include "user.h"
 
 
-user::user() {
+user::user() : hashedPassword(""),userID("") 
+{
+
 	user::setUsername();
 	user::setPassword();
-	connection = new jce(username, password);
 }
 
 int user::getch() {
@@ -24,7 +25,6 @@ void user::getPass(string &pass) {
 	char ch;
 	while(getch() != '\n');
 	ch = getch();
-	int i = 0;
 
    while(ch != 10 && ch != 13){//character 13 is enter
    	if (ch == 10 || ch == 13)
@@ -45,5 +45,16 @@ void user::setPassword() {
 	cout << "\n";
 }
 
+void user::setUserID(string& ID)
+{
+	this->userID = ID;
+}
+void user::setHashedPassword(string& hashpass)
+{
+	this->hashedPassword = hashpass;
+}
+
 string user::getPassword() { return password; };
 string user::getUsername() { return username; };
+string user::getUserID(){ return userID; }
+string user::getHashedPassword(){ return hashedPassword; }

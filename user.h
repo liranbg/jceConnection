@@ -1,26 +1,38 @@
 #ifndef user_H
 #define user_H
 #include <string>
-#include <stdio.h>
 #include <iostream>
 #include <termios.h>
 #include <unistd.h>
-#include "jce.h"
 using namespace std;
 class user
 {
 public:
     user();
+    
     void setUsername();
     void setPassword();
+
     string getPassword();
     string getUsername();
+
+    void setUserID(string& ID);
+    void setHashedPassword(string& hashpass);
+    string getUserID();
+    string getHashedPassword();
+
+
 private:
+
     int getch();
     void getPass(string &pass);
+
     string username;
     string password;
-    jce* connection;
+
+    string hashedPassword;
+    string userID;
+
 };
 #endif
 

@@ -6,14 +6,16 @@
 
 #include "sslsocket.h"
 #include "Page.h"
+#include "user.h"
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 
 class jce
 {
 public:
-	jce(std::string username,std::string password);
+	jce();
 
 	~jce()  { delete recieverPage; delete JceConnector; }
 
@@ -26,13 +28,9 @@ private:
 
 	std::string makeRequest(std::string);
 
-	std::string username;
-	std::string pass;
-	std::string hasspass;
-	std::string hassid;
-	
 	std::string *recieverPage;
 	sslsocket *JceConnector;
+	user userAcc;
 
 };
 
