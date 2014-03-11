@@ -25,12 +25,14 @@ void user::getPass(string &pass) {
 	char ch;
 	while(getch() != '\n');
 	ch = getch();
-
+   
    while(ch != 10 && ch != 13){//character 13 is enter
    	if (ch == 10 || ch == 13)
    		break;
-   	pass.push_back(ch);
-   	cout << '*';
+   	if (ch == 127 && pass.size() > 0)
+   		pass.pop_back();
+   	else if (ch > 1 && ch < 255)
+   		pass.push_back(ch);
    	ch = getch();
    }
 }
