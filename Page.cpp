@@ -4,7 +4,10 @@ Page::Page(string& html)
 {
 	cout << "bulding page... string size: " << html.length() << endl;
 	if(html.empty())
+	{
 		cout << "ERROR: unable to build Page" << endl;
+		return;
+	}
 	makeText(html);
 }
 
@@ -15,12 +18,12 @@ Page::~Page()
 
 void Page::makeText(string& html)
 {
-	bool foundTitle = false;
-	bool inBody = false;
+	bool titleSearch = true;
+	bool actualContent = false;
 	string temp = "";
 	for (int i = 0; i < html.length() ; i++)
 	{
-		if(!foundTitle)
+		if(titleSearch)
 		{
 			if(html[i] == '<')
 			{
@@ -37,36 +40,40 @@ void Page::makeText(string& html)
 						temp += html[i];
 						i++;
 					}
-					foundTitle = true;
+					titleSearch = false;
 					this->title = temp;
 				}
 			}
 			temp = "" ; //clear temp BUFFER
 		}
-		else
+		else if(!actualContent)
 		{
 			if(html[i] == '<')
 			{
-				//body>
 				i++;
-				string bodyTag = html.substr(i, 4); //legth of "body"
-				if(bodyTag == "body") //check if the tag is body tag
+				if(html[i] == '!')
 				{
-					while(html[i] != '>')
-						i++;
-					inBody = true;
+					//!--FileName
+					string bodyTag = html.substr(i, 11); //!--FileName
+
+					if(bodyTag == "!--FileName") //check if the tag is body tag
+					{
+						while(html[i] != '>')
+							i++;
+						actualContent = true;
+					}
 				}
 			}
 		}
-		
+
 		/**
 		 * Actual Body Text In String
 		 */
-		 if(inBody)
+		 if(actualContent)
 		 {
 		 	if(html[i] == '<')
 		 	{
-				//tr> / td>
+				//tr> / td> / th
 		 		i++;
 				string tableTag = html.substr(i, 2); //legth of "tr/td"
 				if(tableTag == "tr")
@@ -75,44 +82,58 @@ void Page::makeText(string& html)
 					while(html[i] != '>')
 						i++;
 					i++;
+					i = stitchText(html, temp, i);
+					if(i == -1) //EOF
+						goto finishBuild;
 				}
-				else if(tableTag == "td")
+				else if(tableTag == "td" || tableTag == "th")
 				{
 					temp += "\t"; // new cell -> tab between data	
 					while(html[i] != '>')
 						i++;
 					i++;
+					i = stitchText(html, temp, i);
+					if(i == -1) //EOF
+						goto finishBuild;
 				}
-			}
-			if(html[i] == '>')
-			{
-				i++;
-				if(endOfString(i, html.length()))
-					goto finishBuild; //Cheak if EOF (Text)
-				while(html[i] != '<')
+				else
 				{
-					if(endOfString(i, html.length()))
-						goto finishBuild; //Cheak if EOF (Text)
-					if(html[i] == '&')
-					{
-					//&nbsp;
-						string nbspChr = html.substr(i, 6);
-						if(nbspChr == "&nbsp;")
-						i += 6;
-						if(endOfString(i, html.length()))
-							goto finishBuild; //Cheak if EOF (Text)
-					}
-					if(html[i] == '<')
-						continue;
-					else if(html[i] != '\n')
-						temp += html[i];
-					i++;
+					while(html[i] != '>')
+						i++;
 				}
 			}
 		}
 	}
+
 	finishBuild:
 		this->text = temp;
+}
+
+int Page::stitchText(string& from, string& to, int index)
+{
+	if(from[index] == '<')
+		return index;
+	
+	while(from[index] != '<' && index < from.length())
+	{	
+		if(from[index] == '&')
+		{
+		//&nbsp;
+			string nbspChr = from.substr(index, 6);
+			if(nbspChr == "&nbsp;")
+				index += 6;
+		}
+
+		if(endOfString(index, from.length()))
+				return -1;
+
+		if(from[index] != '\n')
+			to += from[index];
+		
+		index++;
+	}
+
+	return index-1;
 }
 
 bool Page::endOfString(int index, int length)

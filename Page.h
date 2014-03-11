@@ -15,6 +15,7 @@ public:
 	string getTitle();
 private:
 	void makeText(string& html);
+	int stitchText(string& from, string& to, int index);
 	bool endOfString(int index, int length);
 	string text;
 	string title;
