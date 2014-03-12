@@ -151,10 +151,11 @@ int Page::stitchText(string& from, string& to, int index)
 	{
 		string bTag = from.substr(index, 3);
 			if(bTag != "<b>")
-				return index;
+				return index-1; //go back one step - for the main function to inc i
+			index += 3;
 	}
 
-	index += 2;
+	
 	while(from[index] != '<' && index < from.length())
 	{	
 		if(from[index] == '&')
@@ -166,7 +167,9 @@ int Page::stitchText(string& from, string& to, int index)
 		}
 
 		if(endOfString(index, from.length()))
-			return -1;
+			return -1; //EOF
+		else if(from[index] == '<')
+			return index -1; //go back one step - for the main function to inc i
 
 		if(from[index] != '\n')
 			to += from[index];
