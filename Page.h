@@ -6,6 +6,8 @@
 
 using namespace std;
 
+enum pageException {TITLE_ERROR = 0, CANT_FIND_TABLE_ERROR};
+
 class Page{
 
 public:
@@ -15,10 +17,13 @@ public:
 	string getTitle();
 private:
 	void makeText(string& html);
+	int findTitle(string& from, int index);
+	int runToActualText(string& from, int index);
+	void manageTableContent(string& html, int index);
+	int stitchText(string& from, string& to, int index);
 	bool endOfString(int index, int length);
 	string text;
 	string title;
-	bool haseTable;
 };
 
 #endif
