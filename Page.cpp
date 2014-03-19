@@ -33,7 +33,7 @@ Page::Page(string& html)
 Page::~Page()
 {
 	cout << "killing Page..." <<endl;
-	table->~vector(); //!!NOTE: This may cause core Dump!
+	
 }
 
 void Page::makeText(string& html)
