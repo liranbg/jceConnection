@@ -10,8 +10,9 @@ it uses sockets via SSL's protocol using http post requests.
 Build Requirements
 ==================
 
-1)	libssl && libssl-dev 
-2)	openssl
+	1)	libssl && libssl-dev 
+	
+	2)	openssl
 
 Building
 ========

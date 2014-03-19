@@ -12,6 +12,11 @@
 #include <sstream>
 #include <fstream>
 
+enum jceErrors {
+	VALIDATION_ERROR,
+	SOCKET_ERROR,
+	NO_INPUT_ERROR
+};
 class jce
 {
 public:
@@ -23,10 +28,19 @@ private:
 	void makeFirstVisit();
 	void makeFurtherRequests();
 
+	//validation steps
+	std::string getFirstValidationStep(std::string username,std::string password);
+	std::string getSecondValidationStep(std::string id,std::string hash);
+
+	//getting html
 	std::string getGradesPath(std::string fromyear, std::string fromsemester, 
 		std::string toyear,std::string tosemester);
 
+	//making server requests
 	std::string makeRequest(std::string);
+
+	//check if html file contains valid id and hash
+	bool checkValidation(std::string &html);
 
 	std::string *recieverPage;
 	sslsocket *JceConnector;
