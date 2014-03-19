@@ -16,12 +16,15 @@ Page::Page(string& html)
 		{
 			case TITLE_ERROR:
 				cout << "ERROR: cant find page title" << endl;
+				throw TITLE_ERROR;
 				break;
 			case CANT_FIND_TABLE_ERROR:
 				cout << "ERROR: cant locate actual data in page" << endl;
+				throw CANT_FIND_TABLE_ERROR;
 				break;
 			default:
 				cout << "ERROR: unknown" << endl;
+				throw UNKNOWN_ERROR;
 				break;
 		}
 	}
@@ -30,6 +33,7 @@ Page::Page(string& html)
 Page::~Page()
 {
 	cout << "killing Page..." <<endl;
+	table->~vector(); //!!NOTE: This may cause core Dump!
 }
 
 void Page::makeText(string& html)
