@@ -3,8 +3,9 @@
 jceConnection
 =============
 
-This source code will eventually will become a **complete C++ library** ,that will help Developers to connect to the JCE student information site - so everyone will be able to get the info they want, how they want.
-we found out that the site that we use every day _**sucks**_ and therefore unusable for us.
+This source code will eventually  become a **complete C++ library** ,that will help Developers to connect to the JCE student information site - so everyone will be able to get the info they want, how they want.
+
+we found out that the website we use every day _**sucks**_ and therefore unusable for us.
 so we decided to create this API (the system itself doesn't have one...) for us and others.
 feel free to fork it, and send in pull requests. 
 we need some help :wink:
