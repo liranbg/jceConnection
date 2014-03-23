@@ -87,8 +87,10 @@ void jce::makeFirstVisit()
 
 				//std::cout << pag;
 
-		Page p(*recieverPage);
-		std::cout << p.getString();
+		GradePage* gp = GradePage::createGradeClass(*recieverPage);
+		std::cout << gp->getList().size() << " Courses in your Grade Sheet:"<< endl;
+		gp->printCourses();
+		
 			//makeFurtherRequests();
 	}
 	else

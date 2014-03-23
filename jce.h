@@ -11,6 +11,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include "GradePage.h"
 
 enum jceErrors {
 	VALIDATION_ERROR,
