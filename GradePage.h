@@ -23,7 +23,7 @@ using namespace std;
  *
  *
  * 2014.
- * sagi dayan
+ * Sagi Dayan
  */
 class GradePage : public  Page
 {
