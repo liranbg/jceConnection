@@ -12,7 +12,9 @@ using namespace std;
 /**
  * Usage: to be able to create a GradePage obj, you will need
  * to do so by using the createGradeClass method.
+ * 
  * ex: GradePage* gp = GradePage::createGradeClass(*recieverPage);
+ * 
  * that is why that methos is *static*.
  * you canot use new.
  *

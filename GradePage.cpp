@@ -6,7 +6,7 @@ GradePage::GradePage(string& html) : Page(html)
 {
 	cout << "bulding GradePage..." << endl;
 	genList();
-	rowSize = 6;
+	rowSize = COURSE_FEALDS;
 	colSize = courses.size();
 	cout << "finished building the GradePage" << endl;
 }
@@ -99,7 +99,7 @@ void GradePage::tokenToCourseArgs(string& line, bool& first)
 		courseArgs.push_back(string(tok));
 		tok=strtok(NULL, "\t");
 	}
-	if(courseArgs.size() == 8)
+	if(courseArgs.size() == COURSE_FEALDS+1) //in this->text there is an extra "slot" containing nothing.
 	{	if(first)
 				first = false;
 			else
