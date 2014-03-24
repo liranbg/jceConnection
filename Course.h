@@ -4,10 +4,15 @@
 #include <string>
 #include <iostream>
 
+#define	COURSE_FEALDS	7
+
 using namespace std;
 /**
  * A simple Course Class to contain all the Course Args,
  * and printing them if needed.
+ *
+ * to create a course Object, pass all needed Args.
+ * use getters to get valuse of course.
  */
 class Course{
 
