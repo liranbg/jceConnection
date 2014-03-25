@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-    jce *curr_user = new jce(); 
+    jce curr_user;
     while (true);
     
 }
