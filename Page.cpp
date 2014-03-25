@@ -52,7 +52,7 @@ int Page::findTitle(string& from, int index)
 {
 	cout << "**** in findTitle ****" << endl; //** DEBUG **
 	string temp;
-	while(index < from.length())
+	while(index < (int)from.length())
 	{
 		if(from[index] == '<')
 		{
@@ -83,7 +83,7 @@ int Page::runToActualText(string& from, int index)
 {
 	cout << "**** in runToActualText ****" << endl;   //**DEBUG**
 	cout << "**** index: "<< index <<" ****" << endl; //**DEBUG**
-	while(index < from.length())
+	while(index < (int)from.length())
 	{
 		if(from[index] == '<')
 		{
@@ -114,7 +114,7 @@ void Page::manageTableContent(string& html, int index)
 		 * Actual Body Text In String
 		 */
 	string temp;
-	for (int i = index; i < html.length(); i++)
+	for (int i = index; i < (int)html.length(); i++)
 	{
 		if(html[i] == '<')
 		 {
@@ -160,7 +160,7 @@ int Page::stitchText(string& from, string& to, int index)
 	}
 
 	
-	while(from[index] != '<' && index < from.length())
+	while(from[index] != '<' && index < (int)from.length())
 	{	
 		if(from[index] == '&')
 		{

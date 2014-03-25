@@ -1,20 +1,22 @@
 #ifndef JCE_H
 #define JCE_H
 
-#define dst_host "yedion.jce.ac.il"
-#define dst_port 443
-
-#include "sslsocket.h"
-#include "Page.h"
-#include "user.h"
 #include <iostream>
 #include <string>
 #include <sstream>
 #include <fstream>
+
+#include "sslsocket.h"
+#include "user.h"
+#include "Page.h"
 #include "GradePage.h"
+
+#define dst_host "yedion.jce.ac.il"
+#define dst_port 443
 
 enum jceErrors {
 	VALIDATION_ERROR,
+	OKOK,
 	SOCKET_ERROR,
 	NO_INPUT_ERROR
 };

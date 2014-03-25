@@ -1,39 +1,54 @@
 
+#HOW-TO:
+#	make			to compile
+#	make clean		cleaning objects directory
+#	make bclean		cleaning all files
+#	make rebuild	clean and remake
+
 # compiler
 CC=g++
 
 # compile arguments
-CFLAGS+= -Wall -g -fexceptions -std=c++11 -D_REENTRANT -pthread
+CFLAGS = -Wall -g -fexceptions -std=c++11 -D_REENTRANT -pthread
 
 # linker flags
-LDFLAGS+= -g -std=c++11
+LDFLAGS = -g -std=c++11
 
 # libraries
-LIBS+= -lcrypto -lssl
+LIBS = -lcrypto -lssl
 
-# our source files
-SOURCES=main.cpp socket.cpp sslsocket.cpp jce.cpp Page.cpp user.cpp GradePage.cpp GradePage.h Course.cpp Course.h
+#our source files
+SOURCES=$(wildcard *.cpp)
 
 # a macro to define the objects from sources
-OBJECTS=$(SOURCES:.c=.o)
+BUILD_DIR := build
+OBJC=$(SOURCES:%.cpp=${BUILD_DIR}/%.o)
 
 # executable name
 EXECUTABLE=jce
 
-$(EXECUTABLE): $(OBJECTS)
+.PHONY: all
+
+all:	$(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJC)
 	@echo "Building target" $@ "..."
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@ $(LIBS)
-	@echo "Done!"
-	
+	@$(CC) $(LDFLAGS) -o $@ $(OBJC) $(LIBS)
+
 # a rule for generating object files given their c files
-.c.o:
-	@echo "Compiling" $< "..."
-	$(CC) $(CFLAGS) $< -o $@
-	@echo "Done!"
-	
+#.cpp.o: /$(OBJCDIR)
+${BUILD_DIR}/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 clean:
 	@echo "Ceaning up *.o Files..."
-	rm -rf *s *o $(EXECUTABLE)
-	@echo "Done!"
+	@rm -rf ${BUILD_DIR}
 
-.PHONY: all clean
+bclean:
+	@echo "Ceaning all"
+	@rm -rf $(EXECUTABLE) ${BUILD_DIR}
+
+rebuild: clean all
+
+
