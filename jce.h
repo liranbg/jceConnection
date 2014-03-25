@@ -15,10 +15,15 @@
 #define dst_port 443
 
 enum jceErrors {
-	VALIDATION_ERROR,
-	OKOK,
-	SOCKET_ERROR,
-	NO_INPUT_ERROR
+
+	ERROR_ON_VALIDATION,
+	ERROR_ON_INPUT,
+	ERROR_ON_CONNECTING,
+	ERROR_ON_OPEN_SOCKET,
+	ERROR_ON_GETTING_INFO,
+	ERROR_ON_GETTING_GRADES,
+	ERROR_ON_SEND_REQUEST
+
 };
 class jce
 {
@@ -29,6 +34,7 @@ public:
 
 private:
 	void makeFirstVisit();
+	void makeSecondVisit();
 	void makeFurtherRequests();
 
 	//validation steps
@@ -44,6 +50,10 @@ private:
 
 	//check if html file contains valid id and hash
 	bool checkValidation(std::string &html);
+
+	void printErrorANDabort(jceErrors t);
+
+
 
 	std::string *recieverPage;
 	sslsocket *JceConnector;

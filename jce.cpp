@@ -1,6 +1,6 @@
 #include "jce.h"
 
-
+//simple method to convert types into string. 
 template <typename T>
 std::string to_string(T value)
 {
@@ -13,91 +13,44 @@ jce::jce() : userAcc()
 {
 	recieverPage = new std::string("");
 	JceConnector = new sslsocket(dst_host, dst_port); //open a new ssl connection to jce
-	if (JceConnector->isCon())
-		makeFirstVisit();
-	else
-	{
-		puts("Error while connecting. is your connection ok?");
-		exit(1);
-	}
+
+	if (!JceConnector->isCon())
+		printErrorANDabort(ERROR_ON_OPEN_SOCKET);
+
+	makeFirstVisit();
 }
 
-bool writeHtmlToFile(string& page)
-{
-	ofstream myfile ("page.html");
-	if (myfile.is_open())
-	{
-		myfile << page;
-		myfile.close();
-		return true;
-	}
-	else 
-		cout << "Unable to open file";
-	return false;
-}
 void jce::makeFirstVisit()
 {
 	if (JceConnector->send(makeRequest(getFirstValidationStep(userAcc.getUsername(),userAcc.getPassword()))))
 	{
-		puts ("First login validation step...");
-		if (!JceConnector->recieve(*recieverPage))
-			exit(1);
+		puts ("First login validation step");
 
-		puts("\tRecieved data");
+		if (!JceConnector->recieve(*recieverPage))
+			printErrorANDabort(ERROR_ON_GETTING_INFO);
 
 		if (!checkValidation(*recieverPage))
-		{
-			puts("error while validating");
-			exit(1);
-		}
+			printErrorANDabort(ERROR_ON_VALIDATION);
 
-		//sending second validation step.
-		if (!(JceConnector->send(makeRequest(getSecondValidationStep(userAcc.getUserID(),
-			userAcc.getHashedPassword())))))
-		{
-			puts("error while second validation");
-			exit(1);
-		}
-		puts ("stepping out the landing page. second validation step.\n\tthe main html will be here soon.\n");
+		makeSecondVisit();
+	}
+
+	else
+		printErrorANDabort(ERROR_ON_SEND_REQUEST);
+	
+}
+void jce::makeSecondVisit()
+{
+	puts ("Second login validation step");
+	if ((JceConnector->send(makeRequest(getSecondValidationStep(userAcc.getUserID(), userAcc.getHashedPassword())))))
+	{
 		if (!(JceConnector->recieve(*recieverPage)))
-		{
-			puts("error while recieving");
-			exit(1);
-		}
-		puts("\nrecieved");
-		if  (!(JceConnector->send(makeRequest(getGradesPath("2013","0","2014","3")))))
-		 //change it in GUI (select years, semesters)
-		{
-			puts("error while requesting grades");
-			exit(1);
-		}
-		puts ("getting rates!");
-		if (!(JceConnector->recieve(*recieverPage)))
-		{
-			puts("error while getting grades");
-			exit(1);
-		}
-		puts ("printing grades!");
-				// const char * c =recieverPage->c_str();
-				// std::size_t htmlTabINdex = recieverPage->find("<html");
-				// c += htmlTabINdex; //getting c into the first <html> index in string
-				// std::string pag = to_string(c);
+			printErrorANDabort(ERROR_ON_GETTING_INFO);
 
-				//writeHtmlToFile(*recieverPage); //writes string into page.html
-
-				//std::cout << pag;
-
-		GradePage* gp = GradePage::createGradeClass(*recieverPage);
-		std::cout << gp->getList().size() << " Courses in your Grade Sheet:"<< endl;
-		gp->printCourses();
-		
-			//makeFurtherRequests();
+		makeFurtherRequests();
 	}
 	else
-	{
-		puts("eror while first validation step");
-		exit(1);
-	}
+		printErrorANDabort(ERROR_ON_SEND_REQUEST);
 }
 bool jce::checkValidation(std::string &html)
 {
@@ -119,17 +72,28 @@ bool jce::checkValidation(std::string &html)
 		std::string hassid = recieverPage->substr(id_position1,id_position2-id_position1);
 		userAcc.setUserID(hassid);
 	}
-	if (((userAcc.getUserID()).empty()) || 
-		((userAcc.getHashedPassword()).empty()))
-	{
-		puts("conenction went wrong, reconnect. aborting");
+	if (((userAcc.getUserID()).empty()) || ((userAcc.getHashedPassword()).empty()))
 		return false;
-	}
 
-	puts("we got our id and hash password");
 	return true;
 }
 
+void jce::makeFurtherRequests()
+{
+	puts ("getting rates!");
+	if  (!(JceConnector->send(makeRequest(getGradesPath("2013","0","2014","3"))))) //change it in GUI (select years, semesters)
+		printErrorANDabort(ERROR_ON_SEND_REQUEST);
+
+	if (!(JceConnector->recieve(*recieverPage)))
+	{
+		printErrorANDabort(ERROR_ON_GETTING_GRADES);
+	}
+
+	GradePage* gp = GradePage::createGradeClass(*recieverPage);
+	std::cout << gp->CoursesAmount() << " Courses in your Grade Sheet"<< endl;
+	gp->printCourses();
+
+}
 std::string jce::getFirstValidationStep(std::string username, std::string password)
 {
 	std::string parameters = "?appname=BSHITA&prgname=LoginValidation&arguments=-N";
@@ -175,21 +139,45 @@ std::string jce::makeRequest(std::string parameters)
 	msg += parameters;
 	return msg;
 }
-void jce::makeFurtherRequests()
+void jce::printErrorANDabort(jceErrors t)
 {
-	std::string parameters;
-	puts("\nwrite ur command:");
-	std::cin >> parameters;
-	std::cout << parameters;
-	if (JceConnector->send(makeRequest(parameters)))
+	switch(t)
 	{
-		puts("message has been sent");
-		if (JceConnector->recieve(*recieverPage))
-			puts("\nrecieved");
-		for (auto &p : *recieverPage)
+		case ERROR_ON_VALIDATION:
 		{
-			std::cout << p;
+			printf("validation error\n");
+			break;
+		}
+		case ERROR_ON_CONNECTING:
+		{
+			printf("No connection\n");
+			break;
+		}
+
+		case ERROR_ON_INPUT:
+		{
+			printf("you must have an input\n");
+			break;
+		}
+		case ERROR_ON_OPEN_SOCKET:
+		{
+			printf("socket error. check your internet connection\n");
+			break;
+		}
+		case ERROR_ON_GETTING_INFO:
+		{
+			printf("cant retrieve information. please reload\n");
+			break;
+		}
+		case ERROR_ON_GETTING_GRADES:
+		{
+			printf("cant retrieve grade page\n");
+			break;
+		}
+		case ERROR_ON_SEND_REQUEST:
+		{
+			printf("cant make request with sockets. wtf?");
 		}
 	}
-	//delete
+	exit(1);
 }
