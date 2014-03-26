@@ -10,20 +10,20 @@
 using namespace std;
 
 /**
- * Usage: to be able to create a GradePage obj, you will need
+ * Usage: to be able to create a GradeBook obj, you will need
  * to do so by using the createGradeClass method.
  * 
  * ex: GradePage* gp = GradePage::createGradeClass(*recieverPage);
  * 
- * that is why that methos is *static*.
- * you canot use new.
+ * that is why that method is *static*.
+ * you cannot use new.
  *
  * if something went wrong while the creation of this class, debug
  * it via the output in the Terminal.
  *
  *
  * 2014.
- * sagi dayan
+ * Sagi Dayan
  */
 class GradePage : public  Page
 {
@@ -36,6 +36,7 @@ class GradePage : public  Page
 		int getCols(){return colSize;}
 		int CoursesAmount() { return courses.size(); }
 		void printCourses();
+		double getAvg();
 	private:
 		
 		GradePage(string& html);
@@ -45,6 +46,7 @@ class GradePage : public  Page
 		void tokenToLines();
 		void tokenToCourseArgs(string& line, bool& first);
 		void linkCourse();
+		//these vectors are "global" for convenience... while constructing they will be killed.
 		vector<string> lines;
 		vector<string> courseArgs;
 

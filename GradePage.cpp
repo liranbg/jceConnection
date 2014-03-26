@@ -5,9 +5,14 @@
 GradePage::GradePage(string& html) : Page(html)
 {
 	cout << "bulding GradePage..." << endl;
+	
 	genList();
 	rowSize = COURSE_FIELDS;
 	colSize = courses.size();
+	//cleaning memory - no need for vectors anymore
+	lines.~vector();
+	courseArgs.~vector();
+
 	cout << "finished building the GradePage" << endl;
 }
 
@@ -18,8 +23,7 @@ GradePage::~GradePage()
 {
 	cout << "killing GradePage..." <<endl;
 	courses.~list();
-	lines.~vector();
-	courseArgs.~vector();
+
 }
 
 /**
@@ -31,7 +35,7 @@ list<Course*> GradePage::getList()
 }
 
 /**
- * this method is the only way to get a new obj instence of this class.
+ * this method is the only way to get a new obj instance of this class.
  * for more details see the header file.
  * 
  * @param  html - a string with the HTML code
@@ -50,7 +54,7 @@ GradePage* GradePage::createGradeClass(string& html)
 }
 
 /**
- * this method will create a linked list of all the courses and there
+ * this method will create a linked list of all the classes and there
  * details that are needed.
  */
 void GradePage::genList()
@@ -76,13 +80,11 @@ void GradePage::tokenToLines()
 		lines.push_back(string(tok));
 		tok = strtok(NULL, "\n");
 	}
-	free(textToTok); //cleaning memory
-	free(tok); // cleaning memory
 }
 
 /**
  * this method gets a line of text and cutting it into args via strtok with '\t' as a separator.
- * pushing all the args into a vector, and if there are 8 args, this line actualy contains a course.
+ * pushing all the args into a vector, and if there are 8 args, this line actually contains a course.
  * so we send it forward to linkCourse method.
  * at the end, clearing the vector for the next line to come in.
  * 
@@ -105,8 +107,6 @@ void GradePage::tokenToCourseArgs(string& line, bool& first)
 			else
 				linkCourse();
 	}
-	free(tok);
-	free(cLine);
 	courseArgs.clear();
 }
 
@@ -153,10 +153,27 @@ void GradePage::linkCourse()
 
 /**
  * Uses the printCourse function in the Course class
- * to print the list of courses.
+ * to print the list of courses CLI.
  */
 void GradePage::printCourses()
 {
 	for(Course* c : courses)
 		c->printCourse();
+}
+
+double GradePage::getAvg()
+{
+	double avg = 0;
+	double points = 0;
+	for(Course* c : courses)
+	{
+		if(c->getGrade() != 0)
+		{
+			avg += c->getGrade() * c->getPoints();
+			points += c->getPoints();
+		}
+	}
+
+	avg /= points;
+	return avg;
 }
