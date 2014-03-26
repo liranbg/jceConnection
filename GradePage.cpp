@@ -153,10 +153,27 @@ void GradePage::linkCourse()
 
 /**
  * Uses the printCourse function in the Course class
- * to print the list of courses.
+ * to print the list of courses CLI.
  */
 void GradePage::printCourses()
 {
 	for(Course* c : courses)
 		c->printCourse();
+}
+
+double GradePage::getAvg()
+{
+	double avg = 0;
+	double points = 0;
+	for(Course* c : courses)
+	{
+		if(c->getGrade() != 0)
+		{
+			avg += c->getGrade() * c->getPoints();
+			points += c->getPoints();
+		}
+	}
+
+	avg /= points;
+	return avg;
 }

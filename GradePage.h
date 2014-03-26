@@ -36,6 +36,7 @@ class GradePage : public  Page
 		int getCols(){return colSize;}
 		int CoursesAmount() { return courses.size(); }
 		void printCourses();
+		double getAvg();
 	private:
 		
 		GradePage(string& html);

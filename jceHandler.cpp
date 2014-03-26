@@ -87,6 +87,8 @@ void jceHandler::makeFurtherRequests()
 	GradePage* gp = GradePage::createGradeClass(*recieverPage);
 	std::cout << gp->CoursesAmount() << " Courses in your Grade Sheet"<< endl;
 	gp->printCourses();
+	cout << "____________" << endl;
+	cout << "Your GPA is currantly: " << gp->getAvg() << endl;
 
 }
 std::string jceHandler::getFirstValidationStep()
