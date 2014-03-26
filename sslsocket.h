@@ -4,7 +4,6 @@
 #include "socket.h"
 #include <malloc.h>
 #include <resolv.h>
-#include <vector>
 #include "openssl/ssl.h"
 #include "openssl/err.h"
 

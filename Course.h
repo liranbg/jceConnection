@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 
-#define	COURSE_FEALDS	7
+#define	COURSE_FIELDS	7
 
 using namespace std;
 /**
@@ -27,6 +27,7 @@ public:
 	double getHours(){return this->hours;}
 	double getGrade(){return this->grade;}
 	string getAddidtions(){return this->additions;}
+
 private:
 	int serialNum;
 	string name;

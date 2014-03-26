@@ -34,6 +34,7 @@ class GradePage : public  Page
 		list<Course*> getList();
 		int getRows(){return rowSize;}
 		int getCols(){return colSize;}
+		int CoursesAmount() { return courses.size(); }
 		void printCourses();
 	private:
 		
