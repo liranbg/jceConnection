@@ -3,7 +3,6 @@
 
 user::user() : hashedPassword(""),userID("") 
 {
-
 	user::setUsername();
 	user::setPassword();
 }

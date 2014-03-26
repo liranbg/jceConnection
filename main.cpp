@@ -7,6 +7,6 @@
 int main(int argc, char *argv[])
 {
     jce curr_user;
-    while (true);
-    
+    curr_user.start();
+	return 0;    
 }
