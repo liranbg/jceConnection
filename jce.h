@@ -3,23 +3,21 @@
 
 #include "jceHandler.h"
 
-enum jceOPTIONS
-{
-	GET_GRADES_BY_DATES,
-	GET_SCHEDULE
-};
+
 class jce
 {
 
 public:
 	jce();
-	~jce() {}
+	~jce() { free(handler); }
 	void start();
 
 
 private:
-	jceHandler* handler;
 	user userAcc;
+	jceDates jDates;
+	jceHandler* handler;
+
 };
 
 #endif
