@@ -88,7 +88,7 @@ void jceHandler::makeFurtherRequests()
 	std::cout << gp->CoursesAmount() << " Courses in your Grade Sheet"<< endl;
 	gp->printCourses();
 	cout << "____________" << endl;
-	cout << "Your GPA is currantly: " << gp->getAvg() << endl;
+	cout << "Your GPA is currently: \033[5;32m" << gp->getAvg() << "\033[0m"<< endl << endl;
 
 }
 std::string jceHandler::getFirstValidationStep()
