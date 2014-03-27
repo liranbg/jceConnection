@@ -6,7 +6,7 @@
 #	make rebuild	clean and remake
 
 # compiler
-CC=g++
+CC = g++
 
 # compile arguments
 CFLAGS = -Wall -g -fexceptions -std=c++11 -D_REENTRANT -pthread
@@ -18,7 +18,7 @@ LDFLAGS = -g -std=c++11
 LIBS = -lcrypto -lssl
 
 #our source files
-SOURCES=$(wildcard *.cpp)
+SOURCES = $(wildcard *.cpp)
 
 # a macro to define the objects from sources
 BUILD_DIR := build
@@ -32,8 +32,9 @@ EXECUTABLE=jce
 all:	$(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJC)
-	@echo "Building target" $@ "..."
+	@echo "Building target" $@
 	@$(CC) $(LDFLAGS) -o $@ $(OBJC) $(LIBS)
+	@echo "Done."
 
 # a rule for generating object files given their c files
 #.cpp.o: /$(OBJCDIR)
@@ -42,13 +43,15 @@ ${BUILD_DIR}/%.o: %.cpp
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@echo "Ceaning up *.o Files..."
+	@echo "Ceaning up *.o Files"
 	@rm -rf ${BUILD_DIR}
+	@echo "Done."
 
 bclean:
 	@echo "Ceaning all"
 	@rm -rf $(EXECUTABLE) ${BUILD_DIR}
+	@echo "Done."
 
-rebuild: clean all
+rebuild: bclean all
 
 
