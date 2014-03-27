@@ -37,8 +37,8 @@ class GradePage : public  Page
 		int CoursesAmount() { return courses.size(); }
 		void printCourses();
 		double getAvg();
+
 	private:
-		
 		GradePage(string& html);
 		void genList();
 		list<Course*> courses;

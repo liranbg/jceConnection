@@ -10,6 +10,7 @@
 #include "user.h"
 #include "jceDates.h"
 #include "GradePage.h"
+#include "SchedulePage.h"
 
 #define dst_host "yedion.jce.ac.il"
 #define dst_port 443

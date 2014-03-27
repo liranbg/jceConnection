@@ -86,9 +86,9 @@ void jceHandler::getSchedule()
 		printErrorANDabort(jceHandler::ERROR_ON_GETTING_GRADES);
 	}
 
-
+	SchedulePage* sp = SchedulePage::createSchedulePage(*recieverPage);
 	
-	std::cout << *recieverPage;
+	std::cout << sp->getTitle();
 
 }
 void jceHandler::getGraders()
