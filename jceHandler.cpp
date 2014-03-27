@@ -88,7 +88,7 @@ void jceHandler::getSchedule()
 
 	SchedulePage* sp = SchedulePage::createSchedulePage(*recieverPage);
 	
-	std::cout << sp->getTitle();
+	std::cout << sp->getString();
 
 }
 void jceHandler::getGraders()
