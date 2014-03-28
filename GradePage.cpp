@@ -50,7 +50,8 @@ GradePage* GradePage::createGradeClass(string& html)
 	}catch(int err)
 	{
 		cout << "ERROR: in GradePage @ createGradeClass func. number " << err <<endl;
-	}	return nullptr;
+		return nullptr;
+	}
 }
 
 /**
