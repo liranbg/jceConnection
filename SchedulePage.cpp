@@ -17,7 +17,7 @@ SchedulePage* SchedulePage::createSchedulePage(string &html)
 	}catch(int err)
 	{
 		cout << "ERROR: in SchedulePage @ createSchedulePage func. number " << err <<endl;
-		return nullptr;
+		return NULL;
 	}
 }
 
