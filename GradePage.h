@@ -3,14 +3,14 @@
 
 #include "Page.h"
 #include <list>
-#include <vector>
+#include <vector> //for holding args of courses - used only in constructing
 #include <string.h>
 #include "Course.h"
 
 using namespace std;
 
 /**
- * Usage: to be able to create a GradeBook obj, you will need
+ * Usage: to be able to create a GradePage obj, you will need
  * to do so by using the createGradeClass method.
  * 
  * ex: GradePage* gp = GradePage::createGradeClass(*recieverPage);
